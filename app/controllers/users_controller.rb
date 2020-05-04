@@ -10,6 +10,17 @@ class UsersController < ApplicationController
   def index
   	@users = User.all #一覧表示するためにUserモデルのデータを全て変数に入れて取り出す。
   	@book = Book.new #new bookの新規投稿で必要（保存処理はbookコントローラー側で実施）
+  end
+
+  def create
+    @book = Book.new(book_params) #Bookモデルのテーブルを使用しているのでbookコントローラで保存する。
+    if @book.save #入力されたデータをdbに保存する。
+      redirect_to @book, notice: "successfully created book!"#保存された場合の移動先を指定。
+    else
+      @books = Book.all
+      render 'index'
+    end
+  end
 
   def edit
   	@user = User.find(params[:id])

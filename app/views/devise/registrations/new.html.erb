@@ -6,7 +6,8 @@
   <!--name表示の追加-->
   <div class="field">
     <%= f.label :name %><br />
-    <%= f.name_field :name, autofocus: true, class: "name" %>
+    <!-- f.name_fieldはf.text_fieldへ -->
+    <%= f.text_field :name, autofocus: true, class: "name" %>
   </div>
   <!--name表示の追加-->
 
