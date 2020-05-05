@@ -2,8 +2,26 @@
     <div class="row">
     	<div class="col-xs-3">
 			<h2>User info</h2>
-			<%= render 'users/profile', user: @user %>
-			<!--同コントローラーのviewで表示ならusersは省略可 -->
+			<!-- bookを書いたユーザ情報を表示するためcurrent_user→@userへ -->
+			<table class="table">
+				<tr><%= attachment_image_tag(@user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
+
+				<tr>
+					<th>name</th>
+					<!-- user→current_userへ -->
+					<th><%= @user.name %></th>
+				</tr>
+
+				<tr>
+					<th>introduction</th>
+					<!-- 編集はログインしているユーザのみできる　user→current_userへ -->
+					<th><%= @user.introduction %></th>
+				</tr>
+			</table>
+			<div class="row">
+				<!-- 編集はログインしているユーザーをモデルオブジェクトとして利用のためuser→current_userへ -->
+				<%= link_to '', edit_user_path(current_user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{current_user.id}" %>
+			</div>
 
 			<h2>New book</h2>
 			<%= render 'books/newform', book: @book %>

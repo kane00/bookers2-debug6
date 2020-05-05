@@ -1,17 +1,20 @@
 <table class="table">
-		<tr><%= attachment_image_tag(user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
+		<tr><%= attachment_image_tag user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg" %></tr>
 
 		<tr>
 			<th>name</th>
-			<th><%= user.name %></th>
+			<!-- user→current_userへ -->
+			<th><%= current_user.name %></th>
 		</tr>
 
 		<tr>
 			<th>introduction</th>
-			<th><%= user.introduction %></th>
+			<!-- 編集はログインしているユーザのみできる　user→current_userへ -->
+			<th><%= current_user.introduction %></th>
 		</tr>
 </table>
 
 <div class="row">
-	<%= link_to '',edit_user_path(user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{user.id}" %>
+	<!-- 編集はログインしているユーザーをモデルオブジェクトとして利用のためuser→current_userへ -->
+	<%= link_to '',edit_user_path(current_user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{current_user.id}" %>
 </div>

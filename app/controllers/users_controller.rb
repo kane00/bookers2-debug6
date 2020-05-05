@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
-	before_action :baria_user, only: [:update]
+  # 下記アクションはログインユーザーによってのみ実行可能にする、[]で個別にも可能
+  before_action :authenticate_user!
+  # :editを加える　編集画面に遷移する時にログインユーザーと一致しているかの確認
+	before_action :baria_user, only: [:edit, :update]
 
   def show
   	@user = User.find(params[:id])
@@ -29,9 +32,11 @@ class UsersController < ApplicationController
   def update
   	@user = User.find(params[:id])
   	if @user.update(user_params)
-  		redirect_to users_path(@user), notice: "successfully updated user!"
+      # users_pathをuser_pathに
+  		redirect_to user_path(@user), notice: "successfully updated user!"
   	else
-  		render "show"
+      # ミスの際のrender先がindex→edit
+  		render "edit"
   	end
   end
 

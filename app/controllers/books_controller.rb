@@ -1,4 +1,6 @@
 class BooksController < ApplicationController
+  # 下記アクションはログインユーザーによってのみ実行可能にする、[]で個別にも可能
+  before_action :authenticate_user!
 
   def show
     @book = Book.find(params[:id])
@@ -27,6 +29,17 @@ class BooksController < ApplicationController
 
   def edit
   	@book = Book.find(params[:id])
+    # 非ログインユーザーに対してのアクセス制限
+    if user_signed_in?
+      # ログインユーザと一致していなければ(!=)book一覧にリダイレクト
+      if @book.user_id != current_user.id
+          redirect_to books_path
+          # 一致していたらそのままeditへ
+      end
+    else
+      # ログインしていなかったら
+      redirect_to ("/users/sign_in")
+    end
   end
 
 
@@ -48,10 +61,23 @@ class BooksController < ApplicationController
   	redirect_to books_path, notice: "successfully delete book!"
   end
 
-  private
-
-  def book_params
-  	params.require(:book).permit(:title, :body)
+  # 非ログインユーザーに対してのアクセス制限
+  def ensure_correct_user
+      @book = Book.find(params[:id])
+      if user_signed_in?
+        if @book.user_id != current_user.id
+          redirect_to books_path
+        end
+      else
+        redirect_to ("/users/sign_in")
+      end
   end
+
+
+
+  private
+    def book_params
+  	 params.require(:book).permit(:title, :body)
+    end
 
 end

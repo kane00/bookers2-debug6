@@ -10,8 +10,10 @@ class User < ApplicationRecord
   #本、投稿コメント、いいね機能の関連付け
   has_many :post_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
-  attachment :profile_image, destroy: false
+  attachment :profile_image  #, destroy: false
 
   #バリデーションは該当するモデルに設定する。エラーにする条件を設定できる。
   validates :name, length: {maximum: 20, minimum: 2}
+  # introductionのバリデーション設定がない　Max50字設定
+  validates :introduction, length: {maximum: 50}
 end

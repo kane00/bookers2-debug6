@@ -3,8 +3,26 @@
 	<div class="col-xs-3">
 
 		<h2>User info</h2>
-		<!-- user: @userがない、引数に変更 テンプレートのuserで続いてしまう -->
-		<%= render 'users/profile', user: @user %>
+		<!-- bookを書いたユーザ情報を表示するためrenderは使わず、current_user→@userへ -->
+			<table class="table">
+				<tr><%= attachment_image_tag(@user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
+
+				<tr>
+					<th>name</th>
+					<!-- user→current_userへ -->
+					<th><%= @user.name %></th>
+				</tr>
+
+				<tr>
+					<th>introduction</th>
+					<!-- 編集はログインしているユーザのみできる　user→current_userへ -->
+					<th><%= @user.introduction %></th>
+				</tr>
+			</table>
+			<div class="row">
+				<!-- 編集はログインしているユーザーをモデルオブジェクトとして利用のためuser→current_userへ -->
+				<%= link_to '', edit_user_path(current_user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{current_user.id}" %>
+			</div>
 
 		<h2>New book</h2>
 		<!-- 上記同様、book: @book追加　,も忘れずに -->
@@ -30,9 +48,19 @@
 					<td>
 						<!-- いったんいいね機能は保留 -->
 					</td>
-					<!-- edit_book_pathの後ろの(@book)は不要 -->
-					<td><%= link_to "Edit", edit_book_path, class: "btn-sm btn-success edit_book_#{@book.id}" %></td>
-					<td><%= link_to "Destroy", @book, method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %></td>
+					<td>
+						<!-- （ログインしているユーザ）のマイページが表示されたときのみ、編集ページへのリンクが表示される -->
+						<% if @user.id == current_user.id %>
+						<!-- edit_book_pathの後ろの(@book)は不要 -->
+							<%= link_to "Edit", edit_book_path, class: "btn-sm btn-success edit_book_#{@book.id}" %>
+						<% end %>
+					</td>
+					<td>
+						<!-- ログインユーザが一致の際、削除リンクが表示される -->
+						<% if @user.id == current_user.id %>
+							<%= link_to "Destroy", @book, method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %>
+						<% end %>
+					</td>
 				</tr>
 			</table>
 
