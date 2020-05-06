@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   devise_for :users
   resources :users,only: [:show, :index, :edit, :update]
   resources :books do
+    # コメント機能の親子関係を結びつける
+    resource :post_comments, only: [:create, :destroy]
+    # いいね機能の親子関係を結びつける
   	resource :favorites, only: [:create, :destroy]
   end
     root 'home#top'

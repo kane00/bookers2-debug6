@@ -9,6 +9,9 @@ class Book < ApplicationRecord
         def favorited_by?(user)
             favorites.where(user_id: user.id).exists?
         end
+    # 1つのbookに複数のコメントの関連付け
+    has_many :post_comments, dependent: :destroy
+
 
 	#バリデーションは該当するモデルに設定する。エラーにする条件を設定できる。
 	#presence trueは空欄の場合を意味する。

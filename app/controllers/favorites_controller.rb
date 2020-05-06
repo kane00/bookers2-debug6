@@ -5,14 +5,14 @@ class FavoritesController < ApplicationController
 		book = Book.find(params[:book_id])
 		favorite = current_user.favorites.new(book_id: book.id)
 		favorite.save
-		redirect_to book_path(book)
+		# リダイレクト先を同じページにする(更新のような形)
+		redirect_back(fallback_location: root_path)
 	end
 	def destroy
 		book = Book.find(params[:book_id])
 		favorite = current_user.favorites.find_by(book_id: book.id)
 		favorite.destroy
-		# redirect_to book_path(book)
-		# 削除した後は、行う前にいた画面に遷移する?おためし
+		# リダイレクト先を同じページにする(更新のような形)
 		redirect_back(fallback_location: root_path)
 	end
 

@@ -34,35 +34,63 @@
 		<h2>Book detail</h2>
 
 		<table class="table">
-				<tr>
-					<td>
-						<!-- @book.userの.userを消してlink先をuser.indexへ？ -->
-						<%= link_to (@book.user) do %>
-						<%= attachment_image_tag(@book.user, :profile_image, :fill, 100, 100, fallback: "no-image-mini.jpg") %><br>
-						<%= @user.name %>
-						<% end %>
-					</td>
-					<td><%= link_to @book.title %></td>
-					<td><%= @book.body %></td>
-					<!-- いいね判定を追加 -->
-					<td>
-						<!-- いったんいいね機能は保留 -->
-					</td>
-					<td>
-						<!-- （ログインしているユーザ）のマイページが表示されたときのみ、編集ページへのリンクが表示される -->
-						<% if @user.id == current_user.id %>
-						<!-- edit_book_pathの後ろの(@book)は不要 -->
-							<%= link_to "Edit", edit_book_path, class: "btn-sm btn-success edit_book_#{@book.id}" %>
-						<% end %>
-					</td>
-					<td>
-						<!-- ログインユーザが一致の際、削除リンクが表示される -->
-						<% if @user.id == current_user.id %>
-							<%= link_to "Destroy", @book, method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %>
-						<% end %>
-					</td>
-				</tr>
-			</table>
+			<tr>
+				<td>
+					<!-- @book.userの.userを消してlink先をuser.indexへ？ -->
+					<%= link_to (@book.user) do %>
+					<%= attachment_image_tag(@book.user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %><br>
+					<%= @user.name %>
+					<% end %>
+				</td>
+				<td><%= link_to @book.title %></td>
+				<td><%= @book.body %></td>
+				<!-- いいね判定を追加 -->
+				<td>
+					<!-- いいねをユーザーが行っているか -->
+					<% if @book.favorited_by?(current_user) %>
+						<!-- いいねしていたらdestroyに移るように -->
+					    <%= link_to book_favorites_path(@book), method: :delete do %>
+					    <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+					    <%= @book.favorites.count %>
+					    <% end %>
+					<% else %>
+					<!-- いいねしていなかったらcreateに移るように -->
+					    <%= link_to book_favorites_path(@book), method: :post do %>
+						    <i class="fa fa-heart-o" aria-hidden="true"></i>
+						    <%= @book.favorites.count %>
+					    <% end %>
+					<% end %>
+				</td>
+				<td>
+					コメント数：
+					<%= @book.post_comments.count %>
+				</td>
+				<td>
+					<!-- （ログインしているユーザ）のマイページが表示されたときのみ、編集ページへのリンクが表示される -->
+					<% if @user.id == current_user.id %>
+					<!-- edit_book_pathの後ろの(@book)は不要 -->
+						<%= link_to "Edit", edit_book_path, class: "btn-sm btn-success edit_book_#{@book.id}" %>
+					<% end %>
+				</td>
+				<td>
+					<!-- ログインユーザが一致の際、削除リンクが表示される -->
+					<% if @user.id == current_user.id %>
+						<%= link_to "Destroy", @book, method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %>
+					<% end %>
+				</td>
+			</tr>
+		</table>
+
+		<!-- コメントは、bookに結びついたpost_commentにあるため、form_forにインスタンス変数を2つ用意する必要があります -->
+		<%= form_for [@book,@post_comment] do |f| %>
+		    <div class="row">
+		        <div class="col-sm-10">
+		            <%= f.text_area :comment, rows:'5', class: "form-control",placeholder: "コメントをここに" %>
+		        </div class="col-sm-10">
+		        <!-- f.submitの後ろに"送信"で表示名を変える -->
+			    <%= f.submit "送信", class: "btn btn-default" %>
+			</div>
+		<% end %>
 
 	</div>
 </div>

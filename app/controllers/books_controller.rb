@@ -7,6 +7,7 @@ class BooksController < ApplicationController
     # 上の本に紐づいているユーザーを表示
     @user = @book.user
     @newbook = Book.new
+    @post_comment = PostComment.new
   end
 
   def index
@@ -20,7 +21,8 @@ class BooksController < ApplicationController
     @book.user_id = current_user.id
 
     if @book.save #入力されたデータをdbに保存する。
-  		redirect_to books_path, notice: "successfully created book!"#保存された場合の移動先を指定。
+      # redirect先をshow画面へ @bookへ
+  		redirect_to @book, notice: "successfully created book!"#保存された場合の移動先を指定。
   	else
   		@books = Book.all
   		render 'index'
