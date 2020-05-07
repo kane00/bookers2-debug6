@@ -1,18 +1,9 @@
+<!-- フォローされている人の一覧画面 -->
 <div class="container">
     <div class="row">
-    	<div class="col-xs-3">
-    		<h2>User info</h2>
-			<%= render 'users/profile', user: current_user %>
-			<!--メモ　右側の指定に注意。そこを間違えるとエラーが発生して表示されない -->
-
-			<h2>New book</h2>
-			<!-- newform前のbooks/が抜けている　別ファイルなのでつける -->
-			<%= render 'books/newform', book: @book %>
-		</div>
-
-		<div class="col-xs-9">
-			<h2>Users</h2>
-			<!--users一覧 -->
+    	<div class="col-xs-10">
+			<h2>Follow Users</h2>
+			<!-- indexをベースに -->
 			<table class="table">
 				<thead>
 					<tr>
@@ -35,7 +26,10 @@
 						<%= user.followings.count %></td>
 						<td>フォロワー数：
 						<%= user.followers.count %></td>
-						<td><%= link_to 'フォローする', following_user_path(user) %></td>
+						<td><%= link_to relationship_path(user), method: :delete do %>
+							フォロー外す
+							<% end %>
+						</td>
 						<td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
 					</tr>
 					<% end %>
@@ -44,5 +38,3 @@
 		</div>
 	</div>
 </div>
-<!--users一覧 -->
-

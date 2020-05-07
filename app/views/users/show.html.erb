@@ -17,11 +17,32 @@
 					<!-- 編集はログインしているユーザのみできる　user→current_userへ -->
 					<th><%= @user.introduction %></th>
 				</tr>
+				<tr>
+					<th>Follows</th> 
+					<!-- 表示名はフォロー中の人数、遷移先はフォロー一覧 -->
+					<th><%= link_to @user.followings.count, following_user_path(@user) %></th>
+				</tr>
+				<tr>
+					<th>Followers</th>
+					<!-- 表示名はフォロー中の人数、遷移先はフォロワー一覧 -->
+					<th><%= link_to @user.followers.count, followers_user_path(@user) %></th>
+				</tr>
 			</table>
 			<div class="row">
 				<!-- 編集はログインしているユーザーをモデルオブジェクトとして利用のためuser→current_userへ -->
 				<%= link_to '', edit_user_path(current_user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{current_user.id}" %>
 			</div>
+			<!-- フォローするor外すボタン -->
+			<div class="row">
+			<!-- ユーザーがフォローしている場合は、フォロー解除ボタンを表示。-->
+				<% if current_user.following?(@user) %>
+				  <%= render 'unfollow' %>
+				  <!-- してない場合は、フォローボタン表示させる -->
+				<% else %>
+				  <%= render 'follow' %>
+				<% end %>
+			</div>
+
 
 			<h2>New book</h2>
 			<%= render 'books/newform', book: @book %>
@@ -63,5 +84,6 @@
 		</div>
 	</div>
 </div>
+
 <!--books一覧 -->
 
