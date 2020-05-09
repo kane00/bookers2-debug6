@@ -22,4 +22,6 @@ Rails.application.routes.draw do
 
     root 'home#top'
     get 'home/about'
+    # searchのルーティング,viewのsearchesのsearch.html.erbを表示
+    get '/search', to: 'searches#search'
 end

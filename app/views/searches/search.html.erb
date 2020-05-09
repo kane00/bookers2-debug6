@@ -1,0 +1,14 @@
+<!-- プルダウンメニューのuserで検索した時 -->
+<% if @model == 'user' %>
+	<!-- 検索したワード＝@content -->
+  <h3>Users search for '<%= @content %>'</h3>
+  	<!-- indexの部分テンプレを作っておくとすっきりする -->
+  	<%= render 'users/index', users: @records %>
+
+  <!-- プルダウンメニューのbookで検索した場合の表示 -->
+  <% else @model == 'books' %>
+  <!-- 検索したワード＝@content -->
+  <h3>Books search for '<%= @content %>'</h3>
+  	<!-- indexの部分テンプレを作っておくとすっきりする -->
+    <%= render 'books/index', books: @records %>
+<% end %>
