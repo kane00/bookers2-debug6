@@ -6,7 +6,8 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])
     # 上の本に紐づいているユーザーを表示
     @user = @book.user
-    @newbook = Book.new
+    @book_comment = BookComment.new
+    @book_comments = @book.book_comments
     @post_comment = PostComment.new
   end
 
@@ -60,7 +61,7 @@ class BooksController < ApplicationController
   	@book = Book.find(params[:id])
     # destoy→destroy
   	@book.destroy
-  	redirect_to books_path, notice: "successfully delete book!"
+  	# redirect_to books_path, notice: "successfully delete book!"
   end
 
   # 非ログインユーザーに対してのアクセス制限

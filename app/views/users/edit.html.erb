@@ -1,18 +1,7 @@
 <h2>User info</h2>
 
-<!-- エラーメッセージ表示-->
-<% if @user.errors.any? %>
-	<font color="red">
-		<h3><%= @user.errors.count %>error occurrence</h3><!--エラーメッセ-->
-		<ul>
-			<% @user.errors.full_messages.each do |message| %>
-				<li><%= message %></li>
-			<% end %>
-		</ul>
-	</font>
-<% end %>
-<!-- エラーメッセージ表示-->
-
+<!-- エラーメッセージ表示、これも部分テンプレに -->
+<% render 'layouts/errormessage', obj: @user %>
 
 <%= form_for(@user) do |f| %>
 	<div class="field">

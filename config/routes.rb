@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   resources :books do
     # コメント機能の親子関係を結びつける
-    resource :post_comments, only: [:create, :destroy]
+    resource :book_comments, only: [:create, :destroy]
     # いいね機能の親子関係を結びつける
   	resource :favorites, only: [:create, :destroy]
   end

@@ -3,19 +3,8 @@
 
 <h1>Editing Book</h1>
 
-<!-- エラーメッセージ表示 -->
-<% if @book.errors.any? %>
-    <div id="error_explanation">
-    	<font color="red">
-	        <h3><%= @book.errors.count %> error prohibited this obj from being saved:</h3>
-    	    <ul>
-        	    <% @book.errors.full_messages.each do |msg| %>
-            	    <li><%= msg %></li>
-            	<% end %>
-        	</ul>
-        </font>
-    </div>
-<% end %>
+<!-- エラーメッセージ表示、これも部分テンプレに -->
+<% render 'layouts/errormessage', obj: @book %>
 
 <%= render "books/newform", book: @book %>
 <%= link_to "Show", @book, class: "book_#{@book.id}" %>

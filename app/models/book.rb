@@ -11,6 +11,7 @@ class Book < ApplicationRecord
         end
     # 1つのbookに複数のコメントの関連付け
     has_many :post_comments, dependent: :destroy
+    has_many :book_comments, dependent: :destroy
 
 
 	#バリデーションは該当するモデルに設定する。エラーにする条件を設定できる。
