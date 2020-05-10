@@ -5,13 +5,11 @@ Rails.application.routes.draw do
   devise_for :users
   
   resources :users,only: [:show, :index, :edit, :update] do
-  # フォロー機能のルーティング doつけた
-    member do
-      get :following, :followers
-    end
+  # フォロー機能のルーティング resources user:の下に書くことでルートがつづく
+  resource :relationships, only: [:create, :destroy]
+    get 'follows' => 'relationships#follower', as: 'follows'
+    get 'followers' => 'relationships#followed', as: 'followers'
   end
-  # フォロー機能のルーティング
-   resources :relationships, only: [:create, :destroy]
 
   resources :books do
     # コメント機能の親子関係を結びつける

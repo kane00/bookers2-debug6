@@ -12,26 +12,28 @@ class User < ApplicationRecord
   has_many :favorites, dependent: :destroy
   attachment :profile_image  #, destroy: false
 
-  # user.following_relationships.followingsをできるようにする=フォローできるユーザーを取り出す記述
-  has_many :following_relationships, foreign_key: "follower_id", class_name: "Relationship", dependent: :destroy
-  # user.followingsをできるようにする=フォローしているユーザーを取り出す記述
-  has_many :followings, through: :following_relationships
-  # フォローされているユーザーを取り出す
-  has_many :follower_relationships, foreign_key: "following_id", class_name: "Relationship", dependent: :destroy
-  # user.follwersをできるようにする
-  has_many :followers, through: :follower_relationships
+  # フォロワー取得,user.follwersをできるようにする
+  has_many :follower, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy 
+  # フォロー取得,フォローされているユーザーを取り出す
+  has_many :followed, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy 
+  # 自分がフォローしている人
+  has_many :following_user, through: :follower, source: :followed 
+  # 自分をフォローしている人
+  has_many :follower_user, through: :followed, source: :follower 
 
-  # フォローしているか調べるための関数
-  def following?(other_user)
-    following_relationships.find_by(following_id: other_user.id)
-  end
   # フォローする関数
-  def follow!(other_user)
-    following_relationships.create!(following_id: other_user.id)
+  def follow(user_id)
+    follower.create(followed_id: user_id)
   end
   # フォローを外す関数
-  def unfollow!(other_user)
-    following_relationships.find_by(following_id: other_user.id).destroy
+  # ユーザーのフォローを外す
+  def unfollow(user_id)
+    follower.find_by(followed_id: user_id).destroy
+  end
+  # フォローしているか調べるための関数
+  # フォローしていればtrueを返す
+  def following?(user)
+    following_user.include?(user)
   end
 
   #バリデーションは該当するモデルに設定する。エラーにする条件を設定できる。

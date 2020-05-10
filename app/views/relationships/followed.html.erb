@@ -4,6 +4,8 @@
     	<div class="col-xs-10">
 			<h2>Followers Users</h2>
 			<!-- indexをベースに -->
+			<% if @users.count > 0 %>
+			<!-- フォロワーがいれば -->
 			<table class="table">
 				<thead>
 					<tr>
@@ -34,6 +36,10 @@
 					<% end %>
 				</tbody>
 			</table>
+			<% else %>
+			<!-- フォロワーがいなければ -->
+			  <p>ユーザーはいません</p>
+			<% end %>
 		</div>
 	</div>
 </div>
