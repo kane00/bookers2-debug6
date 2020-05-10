@@ -16,7 +16,7 @@ class FavoritesController < ApplicationController
 		favorite.destroy
 		# リダイレクト先を同じページにする(更新のような形)
 		# redirect_back(fallback_location: root_path)
-		# Ajax（非同期通信）にする際にリダイレクトを消す
+		# Ajax（非同期通信）にする際にリダイレクトを消す.
 	end
 
 end
